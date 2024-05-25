@@ -1,12 +1,23 @@
 import React, {useState} from 'react';
+import axios from "axios";
+import {BASE_URL, PORT} from "../utils/constants";
+import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    let navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
+        axios.post(BASE_URL + ':' + PORT + "/users/login").then(res => {
+            if (res.data.success) {
+                localStorage.setItem("email", res.data.email);
+                navigate('/');
+            } else {
+                alert(res.data.message);
+            }
+        })
         console.log(email + password)
     }
 
