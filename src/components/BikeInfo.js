@@ -16,10 +16,12 @@ const BikeInfo = ({bike}) => {
     localStorage.getItem("email")
 
     const handleClick = () => {
-        const bookBike = async () => {
-            await axios.post(BASE_URL + ':' + PORT + '/rent', {email: localStorage.getItem("email"), bikeId: bike.id});
-        }
-        bookBike();
+        let email = localStorage.getItem("email");
+        axios.post(BASE_URL + ':' + PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
+            alert(res.data.message);
+        }).catch(e => {
+            alert(e.response.data.message);
+        });
     }
 
     return(

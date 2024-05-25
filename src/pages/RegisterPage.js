@@ -4,9 +4,9 @@ import {BASE_URL, PORT} from "../utils/constants";
 import {useNavigate} from "react-router-dom";
 
 const RegisterPage = () => {
-    const [email, setEmail] = useState();
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     const navigate = useNavigate();
     const handleSubmit = (event) => {
@@ -15,9 +15,9 @@ const RegisterPage = () => {
             if (res.data.success) {
                 localStorage.setItem("email", email);
                 navigate('/');
-            } else {
-                alert(res.data.message);
             }
+        }).catch(e => {
+            alert(e);
         });
     }
 
@@ -30,7 +30,7 @@ const RegisterPage = () => {
                 <label>Email:</label><br></br>
                 <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}/><br></br>
                 <label>Name:</label><br></br>
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}/><br></br>
                 <label>Password:</label><br></br>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/><br></br>
                 <input type="submit" value="submit" onClick={handleSubmit}/>
@@ -38,3 +38,5 @@ const RegisterPage = () => {
         </div>
     )
 }
+
+export default RegisterPage;

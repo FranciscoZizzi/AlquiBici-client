@@ -14,11 +14,10 @@ const LoginPage = () => {
             if (res.data.success) {
                 localStorage.setItem("email", res.data.email);
                 navigate('/');
-            } else {
-                alert(res.data.message);
             }
-        })
-        console.log(email + password)
+        }).catch(e => {
+            alert(e);
+        });
     }
 
     return(
