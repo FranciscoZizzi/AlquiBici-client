@@ -5,19 +5,23 @@ import BikeInfo from "../components/BikeInfo";
 
 const HomePage = () => {
 
-    const [bikes, setBikes] = useState([{id:12}, {id:'buenas'}, {id:123}]);
+    const [bikes, setBikes] = useState([]);
 
     useEffect(() => {
-        axios.get(BASE_URL + ':' + PORT + "/api/bikes").then(res => setBikes(res.data)).catch(e => console.log(e))
+        axios.get(BASE_URL + ':' + PORT + "/bikes").then(res => setBikes(res.data)).catch(e => console.log(e))
     }, []);
 
     const rows = [];
-    bikes.forEach(bike => rows.push(<BikeInfo bikeId={bike.id}/>));
+    bikes.forEach(bike => rows.push(<BikeInfo bike={bike}/>));
 
     return(
-        <div>
-            <h1>Available Bikes</h1>
-            {rows}
+        <div style={{
+            marginLeft:"2.5%"
+        }}>
+            <div style={{display:"flex", flexDirection:"column", gap:"5px"}}>
+                <h1>Available Bikes</h1>
+                {rows}
+            </div>
         </div>
     );
 }
