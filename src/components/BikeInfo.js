@@ -3,25 +3,29 @@ import axios from "axios";
 import {BASE_URL, PORT} from "../utils/constants";
 
 const BikeInfo = ({bike}) => {
-    const [bikeInfo, setBikeInfo] = useState({ownerName: "loading"});
+    const [bikeInfo, setBikeInfo] = useState({ownerName: "loading", rented: true, renterEmail: ""});
 
     useEffect(() => {
         const getBikeData = async () => {
             let res = await axios.get(BASE_URL + ':' + PORT + `/bikes/get/${bike.id}`);
             setBikeInfo(res.data);
         }
-        getBikeData().then(() => console.log(''));
+        getBikeData().then(() => console.log('bikeData obtained :D'));
     }, []);
 
-    localStorage.getItem("email")
-
-    const handleClick = () => {
+    const handleBookClick = () => {
         let email = localStorage.getItem("email");
         axios.post(BASE_URL + ':' + PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
             alert(res.data.message);
         }).catch(e => {
             alert(e.response.data.message);
         });
+    }
+
+    const handleReturnClick = () => {
+        axios.post(BASE_URL + ':' + PORT + '/bikes/return', {bikeId: bike.id})
+            .then(() => alert("successfully returned"))
+            .catch((e) => alert(e.response.data.message));
     }
 
     return(
@@ -38,7 +42,8 @@ const BikeInfo = ({bike}) => {
                 <h4>Price: ${bike.price}/km</h4>
             </div>
             <div>
-                <button onClick={handleClick}>Book</button>
+                {bikeInfo.rented ? <div></div> : <button onClick={handleBookClick}>Book</button>}
+                {bikeInfo.renterEmail === localStorage.getItem("email") ? <button onClick={handleReturnClick}>Return</button> : <div></div>}
             </div>
         </div>
     )
