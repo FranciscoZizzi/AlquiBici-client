@@ -10,7 +10,7 @@ const LoginPage = () => {
     let navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(BASE_URL + ':' + PORT + "/users/login").then(res => {
+        axios.post(BASE_URL + ':' + PORT + "/users/login", {email: email, password: password}).then(res => {
             if (res.data.success) {
                 localStorage.setItem("email", res.data.email);
                 navigate('/');

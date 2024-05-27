@@ -4,6 +4,7 @@ import {BASE_URL, PORT} from "../utils/constants";
 
 const BikeInfo = ({bike}) => {
     const [bikeInfo, setBikeInfo] = useState({ownerName: "loading", rented: true, renterEmail: ""});
+    const [update, setUpdate] = useState(false );
 
     useEffect(() => {
         const getBikeData = async () => {
@@ -11,21 +12,29 @@ const BikeInfo = ({bike}) => {
             setBikeInfo(res.data);
         }
         getBikeData().then(() => console.log('bikeData obtained :D'));
-    }, []);
+    }, [update]);
 
     const handleBookClick = () => {
         let email = localStorage.getItem("email");
         axios.post(BASE_URL + ':' + PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
+            setUpdate(!update);
             alert(res.data.message);
         }).catch(e => {
+            setUpdate(!update);
             alert(e.response.data.message);
         });
     }
 
     const handleReturnClick = () => {
         axios.post(BASE_URL + ':' + PORT + '/bikes/return', {bikeId: bike.id})
-            .then(() => alert("successfully returned"))
-            .catch((e) => alert(e.response.data.message));
+            .then(() => {
+                setUpdate(!update);
+                alert("successfully returned");
+            })
+            .catch((e) => {
+                setUpdate(!update);
+                alert(e.response.data.message);
+            });
     }
 
     return(
