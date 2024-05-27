@@ -11,6 +11,10 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (!email || !username || !password) {
+            alert("missing field");
+            return;
+        }
         axios.post(BASE_URL + ':' + PORT + '/users/register', {email, username, password}).then(res => {
             if (res.data.success) {
                 localStorage.setItem("email", email);

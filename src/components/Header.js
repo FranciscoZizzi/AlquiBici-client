@@ -19,7 +19,6 @@ const Header = () => {
         navigate('/login');
     }
 
-    console.log(userData.balance)
     return(
         <div style={{height:"10%", padding: 10, backgroundColor:"lightgray", display: "flex", flexDirection:"row", justifyContent:"space-between"}}>
             <button onClick={handleLogOut}>Log out</button>

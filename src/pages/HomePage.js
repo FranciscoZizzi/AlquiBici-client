@@ -7,6 +7,7 @@ import Header from "../components/Header";
 
 const HomePage = () => {
     const [bikes, setBikes] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const navigate = useNavigate();
 
@@ -14,7 +15,8 @@ const HomePage = () => {
         if (!localStorage.getItem("email")) {
             navigate('/login');
         }
-        axios.get(BASE_URL + ':' + PORT + "/bikes").then(res => setBikes(res.data)).catch(e => console.log(e))
+        axios.get(BASE_URL + ':' + PORT + "/bikes").then(res => setBikes(res.data)).catch(e => console.log(e));
+        axios.get(BASE_URL + ':' + PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
     }, []);
 
     const rows = [];
@@ -24,10 +26,13 @@ const HomePage = () => {
         <div>
             <Header/>
             <div style={{
-                marginLeft:"2.5%"
+                margin:"2.5%"
             }}>
                 <div style={{display:"flex", flexDirection:"column", gap:"5px"}}>
-                    <h1>Available Bikes</h1>
+                    <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
+                        <h1>Available Bikes</h1>
+                        {isAdmin ?<button>Upload Bike</button>:null}
+                    </div>
                     {rows}
                 </div>
             </div>

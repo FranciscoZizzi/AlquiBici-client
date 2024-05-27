@@ -1,2 +1,2 @@
-export const BASE_URL = 'http://100.27.218.155'
+export const BASE_URL = 'http://18.232.136.33'
 export const PORT = '3002'
