@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {BASE_URL, PORT} from "../utils/constants";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 
 const BikeInfo = ({bike}) => {
     const [bikeInfo, setBikeInfo] = useState({ownerName: "loading", rented: true, renterEmail: ""});
@@ -8,7 +8,7 @@ const BikeInfo = ({bike}) => {
 
     useEffect(() => {
         const getBikeData = async () => {
-            let res = await axios.get(BASE_URL + ':' + PORT + `/bikes/get/${bike.id}`);
+            let res = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bike.id}`);
             setBikeInfo(res.data);
         }
         getBikeData().then(() => console.log('bikeData obtained :D'));
@@ -16,7 +16,7 @@ const BikeInfo = ({bike}) => {
 
     const handleBookClick = () => {
         let email = localStorage.getItem("email");
-        axios.post(BASE_URL + ':' + PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
             setUpdate(!update);
             alert(res.data.message);
         }).catch(e => {
@@ -26,7 +26,7 @@ const BikeInfo = ({bike}) => {
     }
 
     const handleReturnClick = () => {
-        axios.post(BASE_URL + ':' + PORT + '/bikes/return', {bikeId: bike.id})
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
                 alert("successfully returned");

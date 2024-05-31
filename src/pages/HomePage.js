@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {BASE_URL, PORT} from "../utils/constants";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 import axios from 'axios';
 import BikeInfo from "../components/BikeInfo";
 import {useNavigate} from "react-router-dom";
@@ -15,8 +15,8 @@ const HomePage = () => {
         if (!localStorage.getItem("email")) {
             navigate('/login');
         }
-        axios.get(BASE_URL + ':' + PORT + "/bikes").then(res => setBikes(res.data)).catch(e => console.log(e));
-        axios.get(BASE_URL + ':' + PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
+        axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + "/bikes").then(res => setBikes(res.data)).catch(e => console.log(e));
+        axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
     }, []);
 
     const rows = [];

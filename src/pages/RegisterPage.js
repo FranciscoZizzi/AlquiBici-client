@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {BASE_URL, PORT} from "../utils/constants";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 import {useNavigate} from "react-router-dom";
 
 const RegisterPage = () => {
@@ -15,7 +15,7 @@ const RegisterPage = () => {
             alert("missing field");
             return;
         }
-        axios.post(BASE_URL + ':' + PORT + '/users/register', {email, username, password}).then(res => {
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/register', {email, username, password}).then(res => {
             if (res.data.success) {
                 localStorage.setItem("email", email);
                 navigate('/');

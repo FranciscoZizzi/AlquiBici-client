@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {BASE_URL, PORT} from "../utils/constants";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 import {useNavigate} from "react-router-dom";
 
 const Header = () => {
@@ -9,7 +9,7 @@ const Header = () => {
 
     useEffect(() => {
         let email = localStorage.getItem("email");
-        axios.get(BASE_URL + ':' + PORT + `/users/get/${email}`).then(res => {
+        axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${email}`).then(res => {
             setUserData(res.data);
         })
     }, []);

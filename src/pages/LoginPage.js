@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import axios from "axios";
-import {BASE_URL, PORT} from "../utils/constants";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 import {useNavigate} from "react-router-dom";
 
 const LoginPage = () => {
@@ -10,7 +10,7 @@ const LoginPage = () => {
     let navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post(BASE_URL + ':' + PORT + "/users/login", {email: email, password: password}).then(res => {
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + "/users/login", {email: email, password: password}).then(res => {
             if (res.data.success) {
                 localStorage.setItem("email", res.data.email);
                 navigate('/');

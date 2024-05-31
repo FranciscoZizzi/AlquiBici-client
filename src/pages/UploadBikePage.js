@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {BASE_URL, PORT} from "../utils/constants";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 
 const UploadBikePage = () => {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -8,7 +8,7 @@ const UploadBikePage = () => {
     const [price, setPrice] = useState();
 
     useEffect(() => {
-        axios.get(BASE_URL + ':' + PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
+        axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
     }, []);
 
     const handleSubmit = (event) => {
@@ -16,7 +16,7 @@ const UploadBikePage = () => {
         if (!bikeId || !price) {
             alert("missing field");
         }
-        axios.post(BASE_URL + ':' + PORT + '/bikes/create', {bikeId: bikeId, price: price, ownerEmail: localStorage.getItem("email")}).then(() => {
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/create', {bikeId: bikeId, price: price, ownerEmail: localStorage.getItem("email")}).then(() => {
             alert("bike uploaded");
             setBikeId("");
             setPrice(undefined);

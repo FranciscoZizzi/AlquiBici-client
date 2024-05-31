@@ -1,12 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import mqtt from "mqtt";
 import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import UploadBikePage from "./pages/UploadBikePage";
+import ActiveRentPage from "./pages/ActiveRentPage";
+import {MQTT_HOSTNAME, MQTT_PORT} from "./utils/constants";
 
 
 function App() {
+    const mqttUri = 'mqtt://' + MQTT_HOSTNAME + ':' + MQTT_PORT;
+    const client = mqtt.connect(mqttUri);
+
+    const [user, setUser] = useState("")
+    client.on("connect", () => {
+        console.log("Connected to MQTT")
+    })
+
   return (
     <>
       <BrowserRouter>
@@ -15,6 +26,7 @@ function App() {
           <Route path={'/login'} element={<LoginPage/>}/>
           <Route path={'/register'} element={<RegisterPage/>}/>
           <Route path={'/upload-bike'} element={<UploadBikePage/>}/>
+          <Route path={'/map'} element={<ActiveRentPage/>}/>
         </Routes>
       </BrowserRouter>
     </>
