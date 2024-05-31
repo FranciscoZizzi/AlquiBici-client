@@ -10,7 +10,7 @@ import {MQTT_HOSTNAME, MQTT_PORT} from "./utils/constants";
 
 
 function App() {
-    const mqttUri = 'mqtt://' + MQTT_HOSTNAME + ':' + MQTT_PORT;
+    const mqttUri = 'ws://' + MQTT_HOSTNAME + ':' + MQTT_PORT;
     const client = mqtt.connect(mqttUri);
 
     const [user, setUser] = useState("")
