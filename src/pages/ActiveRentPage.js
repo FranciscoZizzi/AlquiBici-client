@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import BikeMap from "../components/BikeMap";
+import {json} from "react-router-dom";
 
 const ActiveRentPage = ({client}) => {
     const [data, setPosition] = useState(
@@ -20,8 +21,9 @@ const ActiveRentPage = ({client}) => {
         client.on("message", (topic, message) => {
             if (topic === "test") {
                 let jsonString = Array.from(message).map(byte => String.fromCharCode(byte)).join('');
-                let json = JSON.parse(jsonString);
-                console.log(JSON.stringify(json));
+                console.log(jsonString)
+                // let json = JSON.parse(jsonString);
+                // console.log(JSON.stringify(json));
             }
         })
     }, []);
