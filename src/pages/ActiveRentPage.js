@@ -21,14 +21,13 @@ const ActiveRentPage = ({client}) => {
         const getBikeData = async () => {
             let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeId}`);
             setBikeData(bikeRes.data);
+
+            let bikeData = bikeRes.data
             console.log(bikeRes.data);
-            let clientRes;
-            if (bikeRes.data.renterEmail) {
-                clientRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeRes.data.renterEmail}`);
-            }
-            clientRes ? setClientData(clientRes.data) : null;
-        }
-        getBikeData().then(() => {
+
+            let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {};
+            setClientData(clientRes.data);
+
             client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
                 console.log(bikeData.id)
                 if (!e) {
@@ -44,17 +43,19 @@ const ActiveRentPage = ({client}) => {
                     console.log(e);
                 }
             });
-        });
-        client.on("message", (topic, message) => {
-            if (topic === 'alquibici/' + bikeData.id + '/position') {
-                let json = toJson(message);
-                setPosition(json.lat, json.long);
-            }
-            if (topic === 'alquibici/' + bikeData.id + '/distance') {
-                let distance = toInt(message);
-                console.log(distance);
-            }
-        })
+            client.on("message", (topic, message) => {
+                if (topic === 'alquibici/' + bikeData.id + '/position') {
+                    let json = toJson(message);
+                    setPosition(json.lat, json.long);
+                }
+                if (topic === 'alquibici/' + bikeData.id + '/distance') {
+                    let distance = toInt(message);
+                    console.log(distance);
+                }
+            })
+        }
+        getBikeData()
+
     }, []);
 
     const setPosition = (lat, long) => {
