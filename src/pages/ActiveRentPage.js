@@ -25,7 +25,7 @@ const ActiveRentPage = ({client}) => {
             let bikeData = bikeRes.data
             console.log(bikeRes.data);
 
-            let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {name: 'loading'};
+            let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {data: {name: 'loading'}};
             setClientData(clientRes.data);
 
             client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
