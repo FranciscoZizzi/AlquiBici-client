@@ -36,25 +36,25 @@ const ActiveRentPage = ({client}) => {
                     console.log(e);
                 }
             });
-            client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
-                if (!e) {
-                    console.log("subscribed to distance topic successfully");
-                } else {
-                    console.log(e);
-                }
-            });
-            client.on("message", (topic, message) => {
-                if (topic === 'alquibici/' + bikeData.id + '/position') {
-                    let json = toJson(message);
-                    setPosition(json.lat, json.long);
-                }
-                if (topic === 'alquibici/' + bikeData.id + '/distance') {
-                    let distance = toInt(message);
-                    console.log(distance);
-                }
-            })
         }
-        getBikeData()
+        getBikeData();
+        client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
+            if (!e) {
+                console.log("subscribed to distance topic successfully");
+            } else {
+                console.log(e);
+            }
+        });
+        client.on("message", (topic, message) => {
+            if (topic === 'alquibici/' + bikeData.id + '/position') {
+                let json = toJson(message);
+                setPosition(json.lat, json.long);
+            }
+            if (topic === 'alquibici/' + bikeData.id + '/distance') {
+                let distance = toInt(message);
+                console.log(distance);
+            }
+        })
 
     }, []);
 
