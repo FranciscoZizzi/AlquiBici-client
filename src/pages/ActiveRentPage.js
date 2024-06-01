@@ -28,18 +28,22 @@ const ActiveRentPage = ({client}) => {
             let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {data: {name: 'loading'}};
             setClientData(clientRes.data);
 
-            client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
+            // let positionTopic = 'alquibici/' + bikeData.id + '/position'
+            let positionTopic = 'position'
+            client.subscribe(positionTopic, (e) => {
                 console.log(bikeData.id)
                 if (!e) {
-                    console.log('subscribed to alquibici/' + bikeData.id + '/position');
+                    console.log('subscribed to ' + positionTopic);
                 } else {
                     console.log(e);
                 }
             });
 
-            client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
+            // let distanceTopic = 'alquibici/' + bikeData.id + '/distance'
+            let distanceTopic = 'distance'
+            client.subscribe(distanceTopic, (e) => {
                 if (!e) {
-                    console.log('subscribed to alquibici/' + bikeData.id + '/distance');
+                    console.log('subscribed to ' + distanceTopic);
                 } else {
                     console.log(e);
                 }

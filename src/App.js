@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import mqtt from "mqtt";
 import HomePage from "./pages/HomePage";
@@ -11,28 +11,11 @@ import {MQTT_HOSTNAME, MQTT_PORT} from "./utils/constants";
 
 function App() {
     const mqttUri = 'ws://' + MQTT_HOSTNAME + ':' + MQTT_PORT;
+    const client = mqtt.connect(mqttUri);
 
-    const [client, setClient] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
-
-    useEffect(() => {
-        if (client != null) {
-            console.log(client)
-            client.on('connect', () => {
-                if (!isConnected) {
-                    setIsConnected(true);
-                }
-            });
-            client.on('error', (err) => {
-                console.error('Connection error: ', err);
-                client.end();
-                setIsConnected(false);
-            });
-        } else {
-            setClient(mqtt.connect(mqttUri));
-        }
-
-    }, [client, isConnected]);
+    client.on("connect", () => {
+        console.log("Connected to MQTT")
+    })
 
   return (
     <>
@@ -42,7 +25,7 @@ function App() {
           <Route path={'/login'} element={<LoginPage/>}/>
           <Route path={'/register'} element={<RegisterPage/>}/>
           <Route path={'/upload-bike'} element={<UploadBikePage/>}/>
-          {client ? <Route path={'/map/:bikeId'} element={<ActiveRentPage client={client}/>}/>: null}
+          <Route path={'/map/:bikeId'} element={<ActiveRentPage client={client}/>}/>
         </Routes>
       </BrowserRouter>
     </>
