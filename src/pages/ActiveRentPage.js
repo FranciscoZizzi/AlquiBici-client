@@ -53,6 +53,7 @@ const ActiveRentPage = ({client}) => {
     useEffect(() => {
         client.on("message", (topic, message) => {
             console.log(topic)
+            console.log(bikeData.id)
             if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
                 setPosition(json.lat, json.long);
