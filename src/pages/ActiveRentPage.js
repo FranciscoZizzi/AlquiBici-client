@@ -22,8 +22,8 @@ const ActiveRentPage = ({client}) => {
             if (topic === "test") {
                 let jsonString = Array.from(message).map(byte => String.fromCharCode(byte)).join('');
                 console.log(jsonString)
-                // let json = JSON.parse(jsonString);
-                // console.log(JSON.stringify(json));
+                let json = JSON.parse(jsonString);
+                setPosition({coords: [json.lat, json.long], name: "Current position"})
             }
         })
     }, []);
