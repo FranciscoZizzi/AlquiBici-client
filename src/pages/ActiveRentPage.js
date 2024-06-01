@@ -63,7 +63,7 @@ const ActiveRentPage = ({client}) => {
                 console.log(distance);
             }
         })
-    }, []);
+    }, [bikeData]);
 
     const setPosition = (lat, long) => {
         console.log("updating")
