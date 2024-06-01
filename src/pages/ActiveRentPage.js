@@ -31,7 +31,7 @@ const ActiveRentPage = ({client}) => {
             client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
                 console.log(bikeData.id)
                 if (!e) {
-                    console.log("subscribed to position topic successfully");
+                    console.log('subscribed to alquibici/' + bikeData.id + '/position');
                 } else {
                     console.log(e);
                 }
@@ -40,7 +40,7 @@ const ActiveRentPage = ({client}) => {
         getBikeData();
         client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
             if (!e) {
-                console.log("subscribed to distance topic successfully");
+                console.log('subscribed to alquibici/' + bikeData.id + '/distance');
             } else {
                 console.log(e);
             }
