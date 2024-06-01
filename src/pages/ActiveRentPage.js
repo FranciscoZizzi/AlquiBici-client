@@ -11,8 +11,8 @@ const ActiveRentPage = ({client}) => {
             name: "Current position",
         },
     );
-    const [bikeData, setBikeData] = useState({});
-    const [clientData, setClientData] = useState({});
+    const [bikeData, setBikeData] = useState({ownerName: 'loading', rentDistance: 'loading', price: "loading"});
+    const [clientData, setClientData] = useState({name: 'loading'});
 
     const {bikeId} = useParams();
 
@@ -25,7 +25,7 @@ const ActiveRentPage = ({client}) => {
             let bikeData = bikeRes.data
             console.log(bikeRes.data);
 
-            let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {};
+            let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {name: 'loading'};
             setClientData(clientRes.data);
 
             client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
