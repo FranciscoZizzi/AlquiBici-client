@@ -7,7 +7,7 @@ import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 const ActiveRentPage = ({client}) => {
     const [positionData, setPositionData] = useState(
         {
-            coords: [0, 0],
+            coords: [30, 30],
             name: "Current position",
         },
     );
@@ -28,8 +28,8 @@ const ActiveRentPage = ({client}) => {
             let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {data: {name: 'loading'}};
             setClientData(clientRes.data);
 
-            // let positionTopic = 'alquibici/' + bikeData.id + '/position'
-            let positionTopic = 'position'
+            let positionTopic = 'alquibici/' + bikeData.id + '/position'
+            // let positionTopic = 'position'
             client.subscribe(positionTopic, (e) => {
                 console.log(bikeData.id)
                 if (!e) {
@@ -39,8 +39,8 @@ const ActiveRentPage = ({client}) => {
                 }
             });
 
-            // let distanceTopic = 'alquibici/' + bikeData.id + '/distance'
-            let distanceTopic = 'distance'
+            let distanceTopic = 'alquibici/' + bikeData.id + '/distance'
+            // let distanceTopic = 'distance'
             client.subscribe(distanceTopic, (e) => {
                 if (!e) {
                     console.log('subscribed to ' + distanceTopic);
