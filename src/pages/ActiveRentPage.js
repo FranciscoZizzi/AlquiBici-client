@@ -11,7 +11,7 @@ const ActiveRentPage = ({client}) => {
             name: "Current position",
         },
     );
-    const [bikeData, setBikeData] = useState({ownerName: 'loading', rentDistance: 'loading', price: "loading"});
+    const [bikeData, setBikeData] = useState({ownerName: 'loading', rentDistance: 'loading', price: "loading", id:"loading"});
     const [clientData, setClientData] = useState({name: 'loading'});
 
     const {bikeId} = useParams();
