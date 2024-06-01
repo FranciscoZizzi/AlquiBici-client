@@ -16,7 +16,7 @@ function App() {
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        if (client) {
+        if (client != null) {
             console.log(client)
             client.on('connect', () => {
                 if (!isConnected) {
