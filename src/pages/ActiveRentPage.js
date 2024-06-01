@@ -29,7 +29,6 @@ const ActiveRentPage = ({client}) => {
             setClientData(clientRes.data);
 
             let positionTopic = 'alquibici/' + bikeData.id + '/position'
-            // let positionTopic = 'position'
             client.subscribe(positionTopic, (e) => {
                 console.log(bikeData.id)
                 if (!e) {
@@ -40,7 +39,6 @@ const ActiveRentPage = ({client}) => {
             });
 
             let distanceTopic = 'alquibici/' + bikeData.id + '/distance'
-            // let distanceTopic = 'distance'
             client.subscribe(distanceTopic, (e) => {
                 if (!e) {
                     console.log('subscribed to ' + distanceTopic);
@@ -50,6 +48,9 @@ const ActiveRentPage = ({client}) => {
             });
         }
         getBikeData();
+    }, []);
+
+    useEffect(() => {
         client.on("message", (topic, message) => {
             console.log(topic)
             if (topic === 'alquibici/' + bikeData.id + '/position') {
@@ -61,10 +62,10 @@ const ActiveRentPage = ({client}) => {
                 console.log(distance);
             }
         })
-
     }, []);
 
     const setPosition = (lat, long) => {
+        console.log("updating")
         setPositionData({coords: [lat, long], name: "Current position"});
     }
 
