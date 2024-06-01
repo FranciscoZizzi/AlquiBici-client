@@ -25,7 +25,7 @@ function App() {
           <Route path={'/login'} element={<LoginPage/>}/>
           <Route path={'/register'} element={<RegisterPage/>}/>
           <Route path={'/upload-bike'} element={<UploadBikePage/>}/>
-          <Route path={'/map'} element={<ActiveRentPage client={client}/>}/>
+          <Route path={'/map/:bikeId'} element={<ActiveRentPage client={client}/>}/>
         </Routes>
       </BrowserRouter>
     </>

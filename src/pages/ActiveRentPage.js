@@ -1,35 +1,52 @@
 import React, {useEffect, useState} from 'react';
 import BikeMap from "../components/BikeMap";
+import {useParams} from "react-router-dom";
+import axios from "axios";
+import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 
-const ActiveRentPage = ({client, bikeId}) => {
+const ActiveRentPage = ({client}) => {
     const [positionData, setPositionData] = useState(
         {
             coords: [0, 0],
             name: "Current position",
         },
     );
+    const [bikeData, setBikeData] = useState({});
+    const [clientData, setClientData] = useState({});
+
+    const {bikeId} = useParams();
+
 
     useEffect(() => {
-        client.subscribe("position", (e) => {
-            if (!e) {
-                console.log("subscribed successfully");
-            } else {
-                console.log(e);
-            }
-        });
-        client.subscribe("distance", (e) => {
-            if (!e) {
-                console.log("subscribed successfully");
-            } else {
-                console.log(e);
-            }
+        const getBikeData = async () => {
+            let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeId}`);
+            setBikeData(bikeRes.data);
+            let clientRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeRes.data.renterEmail}`);
+            setClientData(clientRes.data);
+        }
+        getBikeData().then(() => {
+            client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
+                console.log(bikeData.id)
+                if (!e) {
+                    console.log("subscribed to position topic successfully");
+                } else {
+                    console.log(e);
+                }
+            });
+            client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
+                if (!e) {
+                    console.log("subscribed to distance topic successfully");
+                } else {
+                    console.log(e);
+                }
+            });
         });
         client.on("message", (topic, message) => {
-            if (topic === "position") { // TODO change to actual topic
+            if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
                 setPosition(json.lat, json.long);
             }
-            if (topic === "distance") { // TODO change to actual topic
+            if (topic === 'alquibici/' + bikeData.id + '/distance') {
                 let distance = toInt(message);
                 console.log(distance);
             }
@@ -53,8 +70,11 @@ const ActiveRentPage = ({client, bikeId}) => {
 
     return (
         <div>
-            <button onClick={handleClick}>press me</button>
-            <div style={{width: "50%"}}>
+            <h1>Owner: {bikeData.ownerName}</h1>
+            <p>Rented by: {clientData.name}</p>
+            <p>Distance traveled: {bikeData.rentDistance}</p>
+            <p>Price: {bikeData.price}</p>
+            <div style={{width: "50%", height:"50%"}}>
                 <BikeMap data={[positionData]}/>
             </div>
         </div>
