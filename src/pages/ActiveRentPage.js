@@ -19,7 +19,9 @@ const ActiveRentPage = ({client}) => {
         });
         client.on("message", (topic, message) => {
             if (topic === "test") {
-                console.log(JSON.parse(new TextDecoder().decode(message)));
+                let jsonString = Array.from(message).map(byte => String.fromCharCode(byte)).join('');
+                let json = JSON.parse(jsonString);
+                console.log(JSON.stringify(json));
             }
         })
     }, []);
