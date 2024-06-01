@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import BikeMap from "../components/BikeMap";
 
 const ActiveRentPage = ({client}) => {
@@ -8,6 +8,21 @@ const ActiveRentPage = ({client}) => {
             name: "Current position",
         },
     );
+
+    useEffect(() => {
+        client.subscribe("test", (e) => {
+            if (!e) {
+                console.log("subscribed successfully");
+            } else {
+                console.log(e);
+            }
+        });
+        client.on("message", (topic, message) => {
+            if (topic === "test") {
+                console.log(message);
+            }
+        })
+    }, []);
 
     const handleClick = () => {
         setPosition({coords: [0, 0], name: "Current position"})
