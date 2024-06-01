@@ -31,18 +31,13 @@ const ActiveRentPage = ({client, bikeId}) => {
             }
             if (topic === "distance") { // TODO change to actual topic
                 let distance = toInt(message);
-                console.log(message);
                 console.log(distance);
             }
         })
     }, []);
 
-    const handleClick = () => {
-        setPosition(0, 0);
-    }
-
     const setPosition = (lat, long) => {
-        setPositionData({coords: [0, 0], name: "Current position"});
+        setPositionData({coords: [lat, long], name: "Current position"});
     }
 
     const toJson = (byteArray) => {
@@ -52,11 +47,8 @@ const ActiveRentPage = ({client, bikeId}) => {
     }
 
     const toInt = (byteArray) => {
-        let value = 0;
-        for (let i = 0; i < byteArray.length; i++) {
-            value = (value << 8) | byteArray[i];
-        }
-        return value;
+        let string =  Array.from(byteArray).map(byte => String.fromCharCode(byte)).join('');
+        return parseInt(string);
     }
 
     return (
