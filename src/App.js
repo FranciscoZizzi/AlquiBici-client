@@ -13,7 +13,6 @@ function App() {
     const mqttUri = 'ws://' + MQTT_HOSTNAME + ':' + MQTT_PORT;
     const client = mqtt.connect(mqttUri);
 
-    const [user, setUser] = useState("")
     client.on("connect", () => {
         console.log("Connected to MQTT")
     })
@@ -26,7 +25,7 @@ function App() {
           <Route path={'/login'} element={<LoginPage/>}/>
           <Route path={'/register'} element={<RegisterPage/>}/>
           <Route path={'/upload-bike'} element={<UploadBikePage/>}/>
-          <Route path={'/map'} element={<ActiveRentPage/>}/>
+          <Route path={'/map'} element={<ActiveRentPage client={client}/>}/>
         </Routes>
       </BrowserRouter>
     </>

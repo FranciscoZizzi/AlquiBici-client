@@ -1,5 +1,6 @@
 import React from 'react';
 import {Map, MapLayers, MapMarkerLayer, MapTileLayer} from "@progress/kendo-react-map";
+import '@progress/kendo-theme-default/dist/all.css';
 
 const BikeMap = ({data}) => {
     const tileUrl = (e) => `https://tile.openstreetmap.org/${e.zoom}/${e.x}/${e.y}.png`;
