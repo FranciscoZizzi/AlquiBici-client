@@ -19,7 +19,7 @@ const ActiveRentPage = ({client}) => {
 
     useEffect(() => {
         const getBikeData = async () => {
-            let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeId}`);
+            let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeId}`).catch((e) => console.log("error"));
             setBikeData(bikeRes.data);
 
             let bikeData = bikeRes.data
