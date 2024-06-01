@@ -11,6 +11,7 @@ const ActiveRentPage = ({client}) => {
             name: "Current position",
         },
     );
+    const [distance, setDistance] = useState(0);
     const [bikeData, setBikeData] = useState({ownerName: 'loading', rentDistance: 'loading', price: "loading", id:"loading"});
     const [clientData, setClientData] = useState({name: 'loading'});
 
@@ -52,15 +53,13 @@ const ActiveRentPage = ({client}) => {
 
     useEffect(() => {
         client.on("message", (topic, message) => {
-            console.log(topic)
-            console.log(bikeData.id)
             if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
                 setPosition(json.lat, json.long);
             }
             if (topic === 'alquibici/' + bikeData.id + '/distance') {
                 let distance = toInt(message);
-                console.log(distance);
+                setDistance(distance);
             }
         })
     }, [bikeData]);
@@ -85,7 +84,7 @@ const ActiveRentPage = ({client}) => {
         <div>
             <h1>Owner: {bikeData.ownerName}</h1>
             <p>Rented by: {clientData.name}</p>
-            <p>Distance traveled: {bikeData.rentDistance}</p>
+            <p>Distance traveled: {distance}</p>
             <p>Price: {bikeData.price}</p>
             <div style={{width: "50%", height:"50%"}}>
                 <BikeMap data={[positionData]}/>
