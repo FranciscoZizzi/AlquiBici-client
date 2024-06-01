@@ -21,8 +21,12 @@ const ActiveRentPage = ({client}) => {
         const getBikeData = async () => {
             let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeId}`);
             setBikeData(bikeRes.data);
-            let clientRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeRes.data.renterEmail}`);
-            setClientData(clientRes.data);
+            console.log(bikeRes.data);
+            let clientRes;
+            if (bikeRes.data.renterEmail) {
+                clientRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeRes.data.renterEmail}`);
+            }
+            clientRes ? setClientData(clientRes.data) : null;
         }
         getBikeData().then(() => {
             client.subscribe('alquibici/' + bikeData.id + '/position', (e) => {
