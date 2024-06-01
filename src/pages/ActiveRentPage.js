@@ -36,16 +36,18 @@ const ActiveRentPage = ({client}) => {
                     console.log(e);
                 }
             });
+
+            client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
+                if (!e) {
+                    console.log('subscribed to alquibici/' + bikeData.id + '/distance');
+                } else {
+                    console.log(e);
+                }
+            });
         }
         getBikeData();
-        client.subscribe('alquibici/' + bikeData.id + '/distance', (e) => {
-            if (!e) {
-                console.log('subscribed to alquibici/' + bikeData.id + '/distance');
-            } else {
-                console.log(e);
-            }
-        });
         client.on("message", (topic, message) => {
+            console.log(topic)
             if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
                 setPosition(json.lat, json.long);
