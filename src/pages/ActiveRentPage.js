@@ -7,13 +7,14 @@ import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
 const ActiveRentPage = ({client}) => {
     const [positionData, setPositionData] = useState(
         {
-            coords: [30, 30],
+            coords: [0, 0],
             name: "Current position",
         },
     );
     const [distance, setDistance] = useState(0);
     const [bikeData, setBikeData] = useState({ownerName: 'loading', rentDistance: 'loading', price: "loading", id:"loading"});
     const [clientData, setClientData] = useState({name: 'loading'});
+    const [cost, setCost] = useState(0);
 
     const {bikeId} = useParams();
 
@@ -38,15 +39,7 @@ const ActiveRentPage = ({client}) => {
                     console.log(e);
                 }
             });
-
-            let distanceTopic = 'alquibici/' + bikeData.id + '/distance'
-            client.subscribe(distanceTopic, (e) => {
-                if (!e) {
-                    console.log('subscribed to ' + distanceTopic);
-                } else {
-                    console.log(e);
-                }
-            });
+            client.publish("alerts", "send-position"); //TODO vincular
         }
         getBikeData();
     }, []);
@@ -55,17 +48,15 @@ const ActiveRentPage = ({client}) => {
         client.on("message", (topic, message) => {
             if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
+                let distance = parseFloat(json.distance);
                 setPosition(json.lat, json.long);
-            }
-            if (topic === 'alquibici/' + bikeData.id + '/distance') {
-                let distance = toInt(message);
                 setDistance(distance);
+                setCost(bikeData.price * (distance / 1000.0));
             }
-        })
+        });
     }, [bikeData]);
 
     const setPosition = (lat, long) => {
-        console.log("updating")
         setPositionData({coords: [lat, long], name: "Current position"});
     }
 
@@ -75,18 +66,14 @@ const ActiveRentPage = ({client}) => {
         return JSON.parse(jsonString);
     }
 
-    const toInt = (byteArray) => {
-        let string =  Array.from(byteArray).map(byte => String.fromCharCode(byte)).join('');
-        return parseInt(string);
-    }
-
     return (
-        <div style={{marginLeft:"5%"}}>
+        <div style={{marginLeft: "5%"}}>
             <h1>Owner: {bikeData.ownerName}</h1>
             <p>Rented by: {clientData.name}</p>
-            <p>Distance traveled: {distance}</p>
             <p>Price: {bikeData.price}</p>
-            <div style={{width: "50%", height:"50%"}}>
+            <p>Distance traveled: {distance}</p>
+            <p>Cost: {cost}</p>
+            <div style={{width: "50%", height: "50%"}}>
                 <BikeMap data={[positionData]}/>
             </div>
         </div>
