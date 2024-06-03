@@ -41,7 +41,7 @@ const BikeInfo = ({bike, client}) => {
                 setUpdate(!update);
                 alert(e.response.data.message);
             });
-        client.subscribe("alquibici/" + bike.id + "/return", () => console.log("subbed"));
+        client.subscribe('alquibici/' + bike.id + '/return', () => console.log('subbed to alquibici/' + bike.id + '/return'));
         client.on("message", (topic, message) => {
             console.log(topic)
             if (topic === 'alquibici/' + bike.id + '/return') {
