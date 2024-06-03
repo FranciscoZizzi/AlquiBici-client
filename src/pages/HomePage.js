@@ -5,7 +5,7 @@ import BikeInfo from "../components/BikeInfo";
 import {useNavigate} from "react-router-dom";
 import Header from "../components/Header";
 
-const HomePage = () => {
+const HomePage = ({client}) => {
     const [bikes, setBikes] = useState([]);
     const [isAdmin, setIsAdmin] = useState(false);
 
@@ -24,7 +24,7 @@ const HomePage = () => {
     }
 
     const rows = [];
-    bikes.forEach(bike => rows.push(<BikeInfo bike={bike}/>));
+    bikes.forEach(bike => rows.push(<BikeInfo bike={bike} client={client}/>));
 
     return(
         <div>
