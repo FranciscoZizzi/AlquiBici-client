@@ -30,40 +30,6 @@ const BikeInfo = ({bike, client}) => {
         });
     }
 
-    const handleReturnClick = () => {
-        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
-            .then(() => {
-                setUpdate(!update);
-                client.publish('alquibici/' + bike.id + '/rent-status', 'return');
-                alert("successfully returned");
-            })
-            .catch((e) => {
-                setUpdate(!update);
-                alert(e.response.data.message);
-            });
-        client.subscribe('alquibici/' + bike.id + '/return', () => console.log('subbed to alquibici/' + bike.id + '/return'));
-        client.on("message", (topic, message) => {
-            console.log(topic)
-            if (topic === 'alquibici/' + bike.id + '/return') {
-                let json = toJson(message);
-                console.log(JSON.stringify(json))
-                const modifyBalance = async () => {
-                    let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bike.id}`).catch((e) => console.log("error"));
-                    let price = bikeRes.data.price
-                    let funds = json.distance * price / 1000;
-                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: -funds});
-                }
-                modifyBalance();
-            }
-        });
-    }
-
-    const toJson = (byteArray) => {
-        let jsonString = Array.from(byteArray).map(byte => String.fromCharCode(byte)).join('');
-        console.log(jsonString)
-        return JSON.parse(jsonString);
-    }
-
     const handleTitleClick = () => {
         navigate(`map/${bike.id}`);
     }
@@ -78,12 +44,11 @@ const BikeInfo = ({bike, client}) => {
             display:"inline-block",
         }}>
             <div>
-                <span onClick={handleTitleClick}><h3>Owner: {bikeInfo.ownerName}</h3></span>
+                <span onClick={handleTitleClick} style={{cursor:"pointer"}}><h3>Owner: {bikeInfo.ownerName}</h3></span>
                 <h4>Price: ${bike.price}/km</h4>
             </div>
             <div>
                 {bikeInfo.rented ? <div></div> : <button onClick={handleBookClick}>Book</button>}
-                {bikeInfo.renterEmail === localStorage.getItem("email") ? <button onClick={handleReturnClick}>Return</button> : <div></div>}
             </div>
         </div>
     );

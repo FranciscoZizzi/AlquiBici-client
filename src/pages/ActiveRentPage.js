@@ -36,6 +36,14 @@ const ActiveRentPage = ({client}) => {
                 setIsAllowed(true);
             }
 
+            client.subscribe('alquibici/' + bikeData.id + '/return', (e) => {
+                if (!e) {
+                    console.log('subscribed to alquibici/' + bikeData.id + '/return');
+                } else {
+                    console.log(e);
+                }
+            });
+
             let positionTopic = 'alquibici/' + bikeData.id + '/position'
             client.subscribe(positionTopic, (e) => {
                 if (!e) {
@@ -70,6 +78,33 @@ const ActiveRentPage = ({client}) => {
         console.log(jsonString)
         return JSON.parse(jsonString);
     }
+
+    const handleReturnClick = () => {
+        console.log(bikeData.id);
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bikeData.id})
+            .then(() => {
+                client.publish('alquibici/' + bikeData.id + '/rent-status', 'return');
+                alert("successfully returned");
+            })
+            .catch((e) => {
+                alert(e.response.data.message);
+            });
+        client.on("message", (topic, message) => {
+            console.log(topic);
+            if (topic === 'alquibici/' + bikeData.id + '/return') {
+                let json = toJson(message);
+                console.log(JSON.stringify(json));
+                const modifyBalance = async () => {
+                    let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeData.id}`).catch((e) => console.log("error"));
+                    let price = bikeRes.data.price
+                    let funds = json.distance * price / 1000;
+                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: -funds});
+                }
+                modifyBalance();
+            }
+        });
+    }
+
     if (isAllowed) {
         return (
             <div style={{marginLeft: "5%"}}>
@@ -78,6 +113,7 @@ const ActiveRentPage = ({client}) => {
                 <p>Price: {bikeData.price}</p>
                 <p>Distance traveled: {distance}m</p>
                 <p>Cost: ${cost}</p>
+                <button onClick={handleReturnClick}>Return</button>
                 <div style={{width: "50%", height: "50%"}}>
                     <BikeMap data={[positionData]}/>
                 </div>
