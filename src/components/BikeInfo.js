@@ -22,7 +22,7 @@ const BikeInfo = ({bike, client}) => {
         let email = localStorage.getItem("email");
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
             setUpdate(!update);
-            client.publish('alquibici/' + bike.id + '/rentStatus', 'rent');
+            client.publish('alquibici/' + bike.id + '/rent-status', 'rent');
             alert(res.data.message);
         }).catch(e => {
             setUpdate(!update);
@@ -35,7 +35,7 @@ const BikeInfo = ({bike, client}) => {
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
-                client.publish('alquibici/' + bike.id + '/rentStatus', 'return');
+                client.publish('alquibici/' + bike.id + '/rent-status', 'return');
                 alert("successfully returned");
             })
             .catch((e) => {
@@ -49,8 +49,8 @@ const BikeInfo = ({bike, client}) => {
                 const modifyBalance = async () => {
                     let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bike.id}`).catch((e) => console.log("error"));
                     let price = bikeRes.data.price
-                    let funds = -json.distance * price / 1000;
-                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: funds});
+                    let funds = json.distance * price / 1000;
+                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: -funds});
                 }
                 modifyBalance();
             }
