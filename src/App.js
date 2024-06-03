@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage";
 import UploadBikePage from "./pages/UploadBikePage";
 import ActiveRentPage from "./pages/ActiveRentPage";
 import {MQTT_HOSTNAME, MQTT_PORT} from "./utils/constants";
+import AddFundsPage from "./pages/AddFundsPage";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path={'/register'} element={<RegisterPage/>}/>
           <Route path={'/upload-bike'} element={<UploadBikePage/>}/>
           <Route path={'/map/:bikeId'} element={<ActiveRentPage client={client}/>}/>
+          <Route path={'/add-funds'} element={<AddFundsPage/>}/>
         </Routes>
       </BrowserRouter>
     </>

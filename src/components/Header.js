@@ -19,10 +19,17 @@ const Header = () => {
         navigate('/login');
     }
 
+    const handleAddFunds = () => {
+        navigate('/add-funds');
+    }
+
     return(
         <div style={{height:"10%", padding: 10, backgroundColor:"lightgray", display: "flex", flexDirection:"row", justifyContent:"space-between"}}>
             <button onClick={handleLogOut}>Log out</button>
-            <p>Balance: {userData.balance}</p>
+            <div style={{display:"flex", flexDirection:"row", gap:10}}>
+                <p>Balance: {userData.balance}</p>
+                <button onClick={handleAddFunds}>Add Funds</button>
+            </div>
         </div>
     );
 }

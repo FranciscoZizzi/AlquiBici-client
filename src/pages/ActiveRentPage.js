@@ -81,7 +81,7 @@ const ActiveRentPage = ({client}) => {
     }
 
     return (
-        <div>
+        <div style={{marginLeft:"5%"}}>
             <h1>Owner: {bikeData.ownerName}</h1>
             <p>Rented by: {clientData.name}</p>
             <p>Distance traveled: {distance}</p>

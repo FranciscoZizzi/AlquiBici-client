@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
+import {useNavigate} from "react-router-dom";
 
 const BikeInfo = ({bike}) => {
     const [bikeInfo, setBikeInfo] = useState({ownerName: "loading", rented: true, renterEmail: ""});
     const [update, setUpdate] = useState(false );
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getBikeData = async () => {
@@ -37,6 +40,10 @@ const BikeInfo = ({bike}) => {
             });
     }
 
+    const handleTitleClick = () => {
+        navigate(`map/${bike.id}`);
+    }
+
     return(
         <div style={{
             borderRadius:15,
@@ -47,7 +54,7 @@ const BikeInfo = ({bike}) => {
             display:"inline-block",
         }}>
             <div>
-                <h3>Owner: {bikeInfo.ownerName}</h3>
+                <span onClick={handleTitleClick}><h3>Owner: {bikeInfo.ownerName}</h3></span>
                 <h4>Price: ${bike.price}/km</h4>
             </div>
             <div>
