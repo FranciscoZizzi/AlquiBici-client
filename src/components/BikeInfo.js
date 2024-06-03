@@ -10,6 +10,7 @@ const BikeInfo = ({bike, client}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
         const getBikeData = async () => {
             let res = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bike.id}`);
             setBikeInfo(res.data);
@@ -30,6 +31,7 @@ const BikeInfo = ({bike, client}) => {
     }
 
     const handleReturnClick = () => {
+        client.subscribe("alquibici/" + bike.id + "/return");
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
@@ -40,6 +42,25 @@ const BikeInfo = ({bike, client}) => {
                 setUpdate(!update);
                 alert(e.response.data.message);
             });
+        client.on("message", (topic, message) => {
+            if (topic === 'alquibici/' + bike.id + '/return') {
+                let json = toJson(message);
+                console.log(JSON.stringify(json))
+                const modifyBalance = async () => {
+                    let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bike.id}`).catch((e) => console.log("error"));
+                    let price = bikeRes.data.price
+                    let funds = json.distance * price / 1000;
+                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: funds});
+                }
+                modifyBalance();
+            }
+        });
+    }
+
+    const toJson = (byteArray) => {
+        let jsonString = Array.from(byteArray).map(byte => String.fromCharCode(byte)).join('');
+        console.log(jsonString)
+        return JSON.parse(jsonString);
     }
 
     const handleTitleClick = () => {

@@ -19,30 +19,6 @@ function App() {
         console.log("Connected to MQTT")
     });
 
-    client.subscribe("alquibici/" + email + "/return", () => {
-        console.log("Connected to account topic");
-    });
-
-    client.on("message", (topic, message) => {
-        if (topic === 'alquibici/' + email + '/return') {
-            let json = toJson(message);
-            console.log(JSON.stringify(json))
-            const modifyBalance = async () => {
-                let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${json.bikeId}`).catch((e) => console.log("error"));
-                let price = bikeRes.data.price
-                let funds = json.distance * price / 1000;
-                await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email, funds: funds});
-            }
-            modifyBalance();
-        }
-    });
-
-    const toJson = (byteArray) => {
-        let jsonString = Array.from(byteArray).map(byte => String.fromCharCode(byte)).join('');
-        console.log(jsonString)
-        return JSON.parse(jsonString);
-    }
-
     let isLoggedIn = !!email;
 
     const homePage = isLoggedIn ? <HomePage client={client}/> : <LoginPage/>;
