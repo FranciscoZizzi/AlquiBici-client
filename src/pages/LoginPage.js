@@ -16,8 +16,11 @@ const LoginPage = () => {
                 navigate('/');
                 window.location.reload();
             }
+            if (!res.data.success) {
+                alert("incorrect credentials");
+            }
         }).catch(e => {
-            alert("incorrect credentials");
+            alert(e);
         });
     }
 
