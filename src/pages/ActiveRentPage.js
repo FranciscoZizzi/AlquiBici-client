@@ -9,12 +9,13 @@ const ActiveRentPage = ({client}) => {
         {
             coords: [0, 0],
             name: "Current position",
-        },
+        }
     );
     const [distance, setDistance] = useState(0);
     const [bikeData, setBikeData] = useState({ownerName: 'loading', rentDistance: 'loading', price: "loading", id:"loading"});
     const [clientData, setClientData] = useState({name: 'loading'});
     const [cost, setCost] = useState(0);
+    const [isAllowed, setIsAllowed] = useState(false);
 
     const {bikeId} = useParams();
 
@@ -25,14 +26,18 @@ const ActiveRentPage = ({client}) => {
             setBikeData(bikeRes.data);
 
             let bikeData = bikeRes.data
-            console.log(bikeRes.data);
 
             let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {data: {name: 'loading'}};
             setClientData(clientRes.data);
 
+            let email = localStorage.getItem("email");
+            let userRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${email}`);
+            if (userRes.data.isAdmin || userRes.data.email === clientRes.data.email) {
+                setIsAllowed(true);
+            }
+
             let positionTopic = 'alquibici/' + bikeData.id + '/position'
             client.subscribe(positionTopic, (e) => {
-                console.log(bikeData.id)
                 if (!e) {
                     console.log('subscribed to ' + positionTopic);
                 } else {
@@ -65,19 +70,20 @@ const ActiveRentPage = ({client}) => {
         console.log(jsonString)
         return JSON.parse(jsonString);
     }
-
-    return (
-        <div style={{marginLeft: "5%"}}>
-            <h1>Owner: {bikeData.ownerName}</h1>
-            <p>Rented by: {clientData.name}</p>
-            <p>Price: {bikeData.price}</p>
-            <p>Distance traveled: {distance}</p>
-            <p>Cost: {cost}</p>
-            <div style={{width: "50%", height: "50%"}}>
-                <BikeMap data={[positionData]}/>
+    if (isAllowed) {
+        return (
+            <div style={{marginLeft: "5%"}}>
+                <h1>Owner: {bikeData.ownerName}</h1>
+                <p>Rented by: {clientData.name}</p>
+                <p>Price: {bikeData.price}</p>
+                <p>Distance traveled: {distance}</p>
+                <p>Cost: {cost}</p>
+                <div style={{width: "50%", height: "50%"}}>
+                    <BikeMap data={[positionData]}/>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
 
 export default ActiveRentPage

@@ -12,9 +12,6 @@ const HomePage = ({client}) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!localStorage.getItem("email")) {
-            navigate('/login');
-        }
         axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + "/bikes").then(res => setBikes(res.data)).catch(e => console.log(e));
         axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
     }, []);

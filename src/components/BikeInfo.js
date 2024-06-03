@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 
 const BikeInfo = ({bike, client}) => {
     const [bikeInfo, setBikeInfo] = useState({ownerName: "loading", rented: true, renterEmail: ""});
-    const [update, setUpdate] = useState(false );
+    const [update, setUpdate] = useState(false);
 
     const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const BikeInfo = ({bike, client}) => {
         let email = localStorage.getItem("email");
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
             setUpdate(!update);
-            client.publish('alquibici/' + bikeData.id + '/rentStatus', 'rent');
+            client.publish('alquibici/' + bike.id + '/rentStatus', 'rent');
             alert(res.data.message);
         }).catch(e => {
             setUpdate(!update);
@@ -33,7 +33,7 @@ const BikeInfo = ({bike, client}) => {
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
-                client.publish('alquibici/' + bikeData.id + '/rentStatus', 'return');
+                client.publish('alquibici/' + bike.id + '/rentStatus', 'return');
                 alert("successfully returned");
             })
             .catch((e) => {
@@ -64,7 +64,7 @@ const BikeInfo = ({bike, client}) => {
                 {bikeInfo.renterEmail === localStorage.getItem("email") ? <button onClick={handleReturnClick}>Return</button> : <div></div>}
             </div>
         </div>
-    )
+    );
 }
 
 export default BikeInfo;

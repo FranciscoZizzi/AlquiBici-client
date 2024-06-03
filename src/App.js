@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import mqtt from "mqtt";
 import HomePage from "./pages/HomePage";
@@ -16,18 +16,25 @@ function App() {
 
     client.on("connect", () => {
         console.log("Connected to MQTT")
-    })
+    });
+
+    let isLoggedIn = !!localStorage.getItem("email");
+
+    const homePage = isLoggedIn ? <HomePage client={client}/> : <LoginPage/>;
+    const uploadBikePage = isLoggedIn ? <UploadBikePage/> : <LoginPage/>;
+    const activeRentPage = isLoggedIn ? <ActiveRentPage client={client}/> : <LoginPage/>;
+    const addFundsPage = isLoggedIn ? <AddFundsPage/> : <LoginPage/>;
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={'/'} element={<HomePage client={client}/>}/>
           <Route path={'/login'} element={<LoginPage/>}/>
           <Route path={'/register'} element={<RegisterPage/>}/>
-          <Route path={'/upload-bike'} element={<UploadBikePage/>}/>
-          <Route path={'/map/:bikeId'} element={<ActiveRentPage client={client}/>}/>
-          <Route path={'/add-funds'} element={<AddFundsPage/>}/>
+          <Route path={'/'} element={homePage}/>
+          <Route path={'/upload-bike'} element={uploadBikePage}/>
+          <Route path={'/map/:bikeId'} element={activeRentPage}/>
+          <Route path={'/add-funds'} element={addFundsPage}/>
         </Routes>
       </BrowserRouter>
     </>
