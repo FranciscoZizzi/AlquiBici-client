@@ -113,8 +113,8 @@ const ActiveRentPage = ({client}) => {
                     <h1>Owner: {bikeData.ownerName}</h1>
                     <p>Rented by: {clientData.name}</p>
                     <p>Price: {bikeData.price}</p>
-                    <p>Distance traveled: {distance}m</p>
-                    <p>Cost: ${cost}</p>
+                    <p>Distance traveled: {distance.toFixed(2)}m</p>
+                    <p>Cost: ${cost.toFixed(2)}</p>
                     <button onClick={handleReturnClick}>Return</button>
                     <div style={{width: "90%", height: "50%"}}>
                         <BikeMap data={[positionData]}/>
