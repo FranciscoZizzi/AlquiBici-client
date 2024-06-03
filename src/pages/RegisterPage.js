@@ -19,6 +19,7 @@ const RegisterPage = () => {
             if (res.data.success) {
                 localStorage.setItem("email", email);
                 navigate('/');
+                window.location.reload();
             }
         }).catch(e => {
             alert(e);

@@ -14,6 +14,7 @@ const LoginPage = () => {
             if (res.data.success) {
                 localStorage.setItem("email", res.data.email);
                 navigate('/');
+                window.location.reload();
             }
         }).catch(e => {
             alert(e);
