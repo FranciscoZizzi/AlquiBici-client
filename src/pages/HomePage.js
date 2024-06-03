@@ -19,6 +19,10 @@ const HomePage = () => {
         axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${localStorage.getItem("email")}`).then(res => setIsAdmin(res.data.isAdmin));
     }, []);
 
+    const handleClick = () => {
+        navigate('/upload-bike');
+    }
+
     const rows = [];
     bikes.forEach(bike => rows.push(<BikeInfo bike={bike}/>));
 
@@ -31,7 +35,7 @@ const HomePage = () => {
                 <div style={{display:"flex", flexDirection:"column", gap:"5px"}}>
                     <div style={{display:"flex", flexDirection:"row", justifyContent:"space-between"}}>
                         <h1>Available Bikes</h1>
-                        {isAdmin ?<button>Upload Bike</button>:null}
+                        {isAdmin ?<button onClick={handleClick}>Upload Bike</button>:null}
                     </div>
                     {rows}
                 </div>
