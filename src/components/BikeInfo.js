@@ -21,7 +21,7 @@ const BikeInfo = ({bike, client}) => {
         let email = localStorage.getItem("email");
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
             setUpdate(!update);
-            client.publish('alquibici/' + bikeData.id + '/rentStatus', 'rent'); // TODO vincular
+            client.publish('alquibici/' + bikeData.id + '/rentStatus', 'rent');
             alert(res.data.message);
         }).catch(e => {
             setUpdate(!update);
@@ -33,7 +33,7 @@ const BikeInfo = ({bike, client}) => {
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
-                client.publish('alquibici/' + bikeData.id + '/rentStatus', 'return'); // TODO vincular
+                client.publish('alquibici/' + bikeData.id + '/rentStatus', 'return');
                 alert("successfully returned");
             })
             .catch((e) => {

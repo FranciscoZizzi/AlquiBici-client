@@ -39,7 +39,7 @@ const ActiveRentPage = ({client}) => {
                     console.log(e);
                 }
             });
-            client.publish("alerts", "send-position"); //TODO vincular
+            client.publish('alquibici/' + bikeData.id + '/ping', "ping");
         }
         getBikeData();
     }, []);
