@@ -19,6 +19,7 @@ const BikeInfo = ({bike, client}) => {
     }, [update]);
 
     const handleBookClick = () => {
+        client.subscribe("alquibici/" + bike.id + "/return", () => console.log("subbed"));
         let email = localStorage.getItem("email");
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/rent', {email: email, bikeId: bike.id}).then(res => {
             setUpdate(!update);
@@ -31,7 +32,6 @@ const BikeInfo = ({bike, client}) => {
     }
 
     const handleReturnClick = () => {
-        client.subscribe("alquibici/" + bike.id + "/return", () => console.log("subbed"));
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
