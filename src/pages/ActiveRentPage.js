@@ -116,7 +116,7 @@ const ActiveRentPage = ({client}) => {
                     <p>Distance traveled: {distance}m</p>
                     <p>Cost: ${cost}</p>
                     <button onClick={handleReturnClick}>Return</button>
-                    <div style={{width: "50%", height: "50%"}}>
+                    <div style={{width: "90%", height: "50%"}}>
                         <BikeMap data={[positionData]}/>
                     </div>
                 </div>
