@@ -55,8 +55,8 @@ const ActiveRentPage = ({client}) => {
                 let json = toJson(message);
                 let dist = parseFloat(json.distance);
                 setPosition(json.lat, json.long);
-                setDistance(distance + dist);
-                setCost(bikeData.price * ((+distance + +dist) / 1000.0));
+                setDistance(dist);
+                setCost(bikeData.price * dist / 1000.0);
             }
         });
     }, [bikeData]);
@@ -76,8 +76,8 @@ const ActiveRentPage = ({client}) => {
                 <h1>Owner: {bikeData.ownerName}</h1>
                 <p>Rented by: {clientData.name}</p>
                 <p>Price: {bikeData.price}</p>
-                <p>Distance traveled: {distance}</p>
-                <p>Cost: {cost}</p>
+                <p>Distance traveled: {distance}m</p>
+                <p>Cost: ${cost}</p>
                 <div style={{width: "50%", height: "50%"}}>
                     <BikeMap data={[positionData]}/>
                 </div>

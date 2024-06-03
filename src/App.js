@@ -19,6 +19,8 @@ function App() {
         console.log("Connected to MQTT")
     });
 
+    client.subscribe("alquibici/" + email + "/*");
+
     client.on("message", (topic, message) => {
         if (topic === 'alquibici/' + email + '/return') {
             let json = toJson(message);
