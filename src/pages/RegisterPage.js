@@ -40,6 +40,7 @@ const RegisterPage = () => {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/><br></br>
                 <input type="submit" value="submit" onClick={handleSubmit}/>
             </form>
+            <a href={'/login'}>Already have an account?</a>
         </div>
     )
 }

@@ -36,6 +36,7 @@ const LoginPage = () => {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/><br></br>
                 <input type="submit" value="submit" onClick={handleSubmit}/>
             </form>
+            <a href={"/register"}>Create an account</a>
         </div>
     )
 }
