@@ -80,15 +80,6 @@ const ActiveRentPage = ({client}) => {
     }
 
     const handleReturnClick = () => {
-        console.log(bikeData.id);
-        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bikeData.id})
-            .then(() => {
-                client.publish('alquibici/' + bikeData.id + '/rent-status', 'return');
-                alert("successfully returned");
-            })
-            .catch((e) => {
-                alert(e.response.data.message);
-            });
         client.on("message", (topic, message) => {
             console.log(topic);
             if (topic === 'alquibici/' + bikeData.id + '/return') {
@@ -98,11 +89,19 @@ const ActiveRentPage = ({client}) => {
                     let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeData.id}`).catch((e) => console.log("error"));
                     let price = bikeRes.data.price
                     let funds = json.distance * price / 1000;
-                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: -funds});
+                    await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: funds * -1});
                 }
                 modifyBalance();
             }
         });
+        axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bikeData.id})
+            .then(() => {
+                client.publish('alquibici/' + bikeData.id + '/rent-status', 'return');
+                alert("successfully returned");
+            })
+            .catch((e) => {
+                alert(e.response.data.message);
+            });
     }
 
     if (isAllowed) {
