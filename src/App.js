@@ -19,7 +19,9 @@ function App() {
         console.log("Connected to MQTT")
     });
 
-    client.subscribe("alquibici/" + email + "/*");
+    client.subscribe("alquibici/" + email + "/*", () => {
+        console.log("Connected to account topic");
+    });
 
     client.on("message", (topic, message) => {
         if (topic === 'alquibici/' + email + '/return') {
