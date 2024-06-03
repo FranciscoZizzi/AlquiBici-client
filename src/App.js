@@ -26,7 +26,7 @@ function App() {
     client.on("message", (topic, message) => {
         if (topic === 'alquibici/' + email + '/return') {
             let json = toJson(message);
-
+            console.log(JSON.stringify(json))
             const modifyBalance = async () => {
                 let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${json.bikeId}`).catch((e) => console.log("error"));
                 let price = bikeRes.data.price
