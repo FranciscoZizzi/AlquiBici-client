@@ -17,7 +17,7 @@ const LoginPage = () => {
                 window.location.reload();
             }
         }).catch(e => {
-            alert(e);
+            alert("incorrect credentials");
         });
     }
 
