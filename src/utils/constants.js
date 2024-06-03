@@ -1,4 +1,4 @@
-export const SERVER_HOSTNAME = '107.22.130.242'
+export const SERVER_HOSTNAME = '54.226.251.160'
 export const SERVER_PORT = '3002'
 
 export const MQTT_HOSTNAME = '18.235.100.121'
