@@ -53,10 +53,10 @@ const ActiveRentPage = ({client}) => {
         client.on("message", (topic, message) => {
             if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
-                let distance = parseFloat(json.distance);
+                let dist = parseFloat(json.distance);
                 setPosition(json.lat, json.long);
-                setDistance(distance);
-                setCost(bikeData.price * (distance / 1000.0));
+                setDistance(distance + dist);
+                setCost(bikeData.price * ((+distance + +dist) / 1000.0));
             }
         });
     }, [bikeData]);
