@@ -43,6 +43,7 @@ const BikeInfo = ({bike, client}) => {
                 alert(e.response.data.message);
             });
         client.on("message", (topic, message) => {
+            console.log('boom')
             if (topic === 'alquibici/' + bike.id + '/return') {
                 let json = toJson(message);
                 console.log(JSON.stringify(json))
