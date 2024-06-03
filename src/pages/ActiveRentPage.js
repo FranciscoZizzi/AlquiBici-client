@@ -3,6 +3,7 @@ import BikeMap from "../components/BikeMap";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import {SERVER_HOSTNAME, SERVER_PORT} from "../utils/constants";
+import Header from "../components/Header";
 
 const ActiveRentPage = ({client}) => {
     const [positionData, setPositionData] = useState(
@@ -106,15 +107,18 @@ const ActiveRentPage = ({client}) => {
 
     if (isAllowed) {
         return (
-            <div style={{marginLeft: "5%"}}>
-                <h1>Owner: {bikeData.ownerName}</h1>
-                <p>Rented by: {clientData.name}</p>
-                <p>Price: {bikeData.price}</p>
-                <p>Distance traveled: {distance}m</p>
-                <p>Cost: ${cost}</p>
-                <button onClick={handleReturnClick}>Return</button>
-                <div style={{width: "50%", height: "50%"}}>
-                    <BikeMap data={[positionData]}/>
+            <div>
+                <Header/>
+                <div style={{marginLeft: "5%"}}>
+                    <h1>Owner: {bikeData.ownerName}</h1>
+                    <p>Rented by: {clientData.name}</p>
+                    <p>Price: {bikeData.price}</p>
+                    <p>Distance traveled: {distance}m</p>
+                    <p>Cost: ${cost}</p>
+                    <button onClick={handleReturnClick}>Return</button>
+                    <div style={{width: "50%", height: "50%"}}>
+                        <BikeMap data={[positionData]}/>
+                    </div>
                 </div>
             </div>
         );

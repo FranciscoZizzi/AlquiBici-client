@@ -15,7 +15,7 @@ const BikeInfo = ({bike, client}) => {
             let res = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bike.id}`);
             setBikeInfo(res.data);
         }
-        getBikeData().then(() => console.log('bikeData obtained :D'));
+        getBikeData().then(() => console.log('bikeData obtained'));
     }, [update]);
 
     const handleBookClick = () => {

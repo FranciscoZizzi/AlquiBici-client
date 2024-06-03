@@ -6,7 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import UploadBikePage from "./pages/UploadBikePage";
 import ActiveRentPage from "./pages/ActiveRentPage";
-import {MQTT_HOSTNAME, MQTT_PORT, SERVER_HOSTNAME, SERVER_PORT} from "./utils/constants";
+import {MQTT_HOSTNAME, MQTT_PORT} from "./utils/constants";
 import AddFundsPage from "./pages/AddFundsPage";
 import axios from "axios";
 
