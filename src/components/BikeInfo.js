@@ -31,7 +31,7 @@ const BikeInfo = ({bike, client}) => {
     }
 
     const handleReturnClick = () => {
-        client.subscribe("alquibici/" + bike.id + "/return");
+        client.subscribe("alquibici/" + bike.id + "/return", () => console.log("subbed"));
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bike.id})
             .then(() => {
                 setUpdate(!update);
