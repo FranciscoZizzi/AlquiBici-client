@@ -97,7 +97,7 @@ const ActiveRentPage = ({client}) => {
         });
         axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/bikes/return', {bikeId: bikeData.id})
             .then(() => {
-                client.publish('alquibici/' + bikeData.id + '/rent-status', 'return');
+                client.publish('alquibici/' + bikeData.id + '/rentstatus', 'return');
                 alert("successfully returned");
             })
             .catch((e) => {

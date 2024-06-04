@@ -24,7 +24,7 @@ const BikeInfo = ({bike, client}) => {
             axios.get("http://" + SERVER_HOSTNAME + ":" + SERVER_PORT + `/users/get/${email}`).then(res => {
                 let balance = res.data.balance;
                 let price = bike.price;
-                client.publish('alquibici/' + bike.id + '/rent-status', `rent ${1000 * balance/price}`);
+                client.publish('alquibici/' + bike.id + '/rentstatus', `rent ${1000 * balance/price}`);
             })
             alert(res.data.message);
         }).catch(e => {
