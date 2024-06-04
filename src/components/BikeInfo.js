@@ -25,8 +25,8 @@ const BikeInfo = ({bike, client}) => {
                 let balance = res.data.balance;
                 let price = bike.price;
                 client.publish('alquibici/' + bike.id + '/rent-status', `rent ${1000 * balance/price}`);
-                alert(res.data.message);
             })
+            alert(res.data.message);
         }).catch(e => {
             setUpdate(!update);
             alert(e.response.data.message);
