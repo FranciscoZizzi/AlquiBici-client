@@ -7,7 +7,7 @@ const BikeMap = ({data}) => {
     const attribution = '© OpenStreetMap contributors';
 
     return (
-        <Map center={[-34.603722, -58.381592]} zoom={10}>
+        <Map>
             <MapLayers>
                 <MapTileLayer
                     urlTemplate={tileUrl}
