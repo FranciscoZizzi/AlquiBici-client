@@ -65,7 +65,7 @@ const ActiveRentPage = ({client}) => {
         client.on("message", (topic, message) => {
             if (topic === 'alquibici/' + bikeData.id + '/position') {
                 let json = toJson(message);
-                let dist = parseFloat(json.distance);
+                let dist = parseFloat(json.dist);
                 setPosition(json.lat, json.long);
                 setDistance(dist);
                 setCost(bikeData.price * dist / 1000.0);
@@ -92,7 +92,7 @@ const ActiveRentPage = ({client}) => {
                 const modifyBalance = async () => {
                     let bikeRes = await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/bikes/get/${bikeData.id}`).catch((e) => console.log("error"));
                     let price = bikeRes.data.price
-                    let funds = json.distance * price / 1000;
+                    let funds = json.dist * price / 1000;
                     await axios.post('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + '/users/add-funds', {email: localStorage.getItem("email"), funds: funds * -1});
                 }
                 modifyBalance();
@@ -118,7 +118,7 @@ const ActiveRentPage = ({client}) => {
                     <p>Price: {bikeData.price}</p>
                     <p>Distance traveled: {distance.toFixed(2)}m</p>
                     <p>Cost: ${cost.toFixed(2)}</p>
-                    {isRented ? <button onClick={handleReturnClick}>Return</button> : null}
+                    <button onClick={handleReturnClick}>Return</button>
                     <div style={{width: "90%", height: "50%"}}>
                         <BikeMap data={[positionData]}/>
                     </div>
