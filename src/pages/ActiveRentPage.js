@@ -17,6 +17,7 @@ const ActiveRentPage = ({client}) => {
     const [clientData, setClientData] = useState({name: 'loading'});
     const [cost, setCost] = useState(0);
     const [isAllowed, setIsAllowed] = useState(false);
+    const [isRented, setIsRented] = useState(false);
 
     const {bikeId} = useParams();
 
@@ -27,6 +28,8 @@ const ActiveRentPage = ({client}) => {
             setBikeData(bikeRes.data);
 
             let bikeData = bikeRes.data
+
+            setIsRented(bikeRes.rented);
 
             let clientRes = bikeRes.data.renterEmail ? await axios.get('http://' + SERVER_HOSTNAME + ':' + SERVER_PORT + `/users/get/${bikeData.renterEmail}`) : {data: {name: 'loading'}};
             setClientData(clientRes.data);
@@ -115,7 +118,7 @@ const ActiveRentPage = ({client}) => {
                     <p>Price: {bikeData.price}</p>
                     <p>Distance traveled: {distance.toFixed(2)}m</p>
                     <p>Cost: ${cost.toFixed(2)}</p>
-                    <button onClick={handleReturnClick}>Return</button>
+                    {isRented ? <button onClick={handleReturnClick}>Return</button> : null}
                     <div style={{width: "90%", height: "50%"}}>
                         <BikeMap data={[positionData]}/>
                     </div>
